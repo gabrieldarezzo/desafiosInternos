@@ -2,7 +2,7 @@ Pessoal preciso de ajuda, na seguinte situação, meus campos são criados dinam
 
 Exemplo: 
 
-
+```
 <table>
   <tr>
     <td>QTD</td>
@@ -25,3 +25,4 @@ Exemplo:
     <td><input type="text" name="valorsubtotal[]" /></td>
   </tr>
 </table>
+```
