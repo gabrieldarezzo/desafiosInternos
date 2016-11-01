@@ -2,7 +2,7 @@ Pessoal preciso de ajuda, na seguinte situação, meus campos são criados dinam
 
 Exemplo: 
 
-```
+```html
 <table>
   <tr>
     <td>QTD</td>
