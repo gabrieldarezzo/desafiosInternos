@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+
+<select name="uf" id="uf">
+	<option value="">-- Escolha o Estado --</option>
+	
+</select>
+
+<select name="cidade" id="cidade" style="display:none;"></select> <!-- S? exibe depois que selecionar o estado -->
+	
+	
+<script type="text/javascript">	
+	//json ? uma variavel 'global'
+	var json;
+	
+	
+	//Vamos fazer um Ajax s? de zoas
+	ajax = new XMLHttpRequest();		
+	//Pega uma um array de estados com array de cidades Cortesia do gitzeiro: @letanure
+	ajax.open('GET', 'https://gist.githubusercontent.com/letanure/3012978/raw/36fc21d9e2fc45c078e0e0e07cce3c81965db8f9/estados-cidades.json', true);
+	ajax.send();
+	
+	ajax.onreadystatechange = function() {
+		if(ajax.readyState == 4 && ajax.status == 200) {
+		
+			//Parsea o text para JSON
+			json = JSON.parse(ajax.responseText);
+		
+			//Percorre todos os estados
+			for(i in json.estados){
+				var estado = json.estados[i];
+				
+				//Cria a a cidade na tag 'Option'
+				var option = document.createElement("option");
+				option.text = estado.nome;
+				option.value = estado.sigla;
+				
+				//Insere no Select(uf) as options criadas
+				var selectUf = document.getElementById("uf");
+				selectUf.appendChild(option);
+			}
+		}
+	}
+	
+	//Monitra o evento Change, e assim que ocorrer altera??o, exibe as cidades do mesmo (aproveitando a mesma requisi??o (var json))
+	document.getElementById('uf').addEventListener('change', function() {	
+		//Pega o Estado que o cara selecionou... Ex: 'SP'
+		var ufSelecionado = this.value;
+		
+		//Deixa o Select de Cidades Facil para manipular
+		var selectCidades = document.getElementById("cidade");
+		
+		//Remove todas as cidades (caso esteja trocando)
+		while (selectCidades.firstChild) {
+			selectCidades.removeChild(selectCidades.firstChild);
+		}
+		
+		//Percorre todo o Loop de estados
+		for(i in json.estados){
+			var estado = json.estados[i];			
+			//Caso a sigla seja a mesma selecionada
+			if(estado.sigla == ufSelecionado){
+			
+				for(x in estado.cidades){
+					var cidade = estado.cidades[x];
+					
+					//Cria a a cidade na tag 'Option'
+					var option = document.createElement("option");
+					option.text = cidade;
+					option.value = x;
+					
+					//Insere no Select a tag criada			
+					selectCidades.appendChild(option);
+					
+					//Retira a condi??o de 'Esconder'
+					selectCidades.style.display = null;
+				}
+			}
+		}
+	});
+</script>
+</body>
+</html>
