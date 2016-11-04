@@ -1,32 +1,20 @@
-Pessoal preciso de ajuda, na seguinte situação, meus campos são criados dinamicamente e preciso calcular o subtotal ao digitar de cada produto.
+Panela eu tenho um formulário, na hora que selecionar o estado aparece as cidades do mesmo usando "select" em 
+HTML eu fiz os select só que não sei como ficaria os script pra isso, alguém pode ajudar?
 
-Exemplo: 
 
 ```html
-<table>
-  <tr>
-    <td>QTD</td>
-    <td>VALOR UNITARIO</td>
-    <td>SUB TOTAL</td>
-  </tr>
-  <tr>
-    <td><input type="text" name="qtd[]"/></td>
-    <td><input type="text" name="valorunitario[]" /></td>
-    <td><input type="text" name="valorsubtotal[]" /></td>
-  </tr>
-  <tr>
-    <td><input type="text" name="qtd[]" /></td>
-    <td><input type="text" name="valorunitario[]" /></td>
-    <td><input type="text" name="valorsubtotal[]" /></td>
-  </tr>
-  <tr>
-    <td><input type="text" name="qtd[]" /></td>
-    <td><input type="text" name="valorunitario[]" /></td>
-    <td><input type="text" name="valorsubtotal[]" /></td>
-  </tr>
-</table>
+UF: <select name="UF" id="uf">
+     <optgroup>
+     <option>Selecione UF</option>
+     <option value="SP">São Paulo</option>
+     <option value="RJ">Rio de Janeiro</option>
+     <option value="MS">Mato Grosso do Sul</option>
+     </optgroup>
+     </select><br/>
 ```
 
-
 Resposta:
-https://github.com/gabrieldarezzo/desafiosInternos/blob/master/table/index.html
+https://github.com/gabrieldarezzo/desafiosInternos/blob/master/select/index.html
+
+Live: 
+http://gabrieldarezzo.github.io/desafiosInternos/select/index.html

@@ -11,15 +11,15 @@
 	
 </select>
 
-<select name="cidade" id="cidade" style="display:none;"></select> <!-- S? exibe depois que selecionar o estado -->
+<select name="cidade" id="cidade" style="display:none;"></select> <!-- Só exibe depois que selecionar o estado -->
 	
 	
 <script type="text/javascript">	
-	//json ? uma variavel 'global'
+	//json é uma variavel 'global'
 	var json;
 	
 	
-	//Vamos fazer um Ajax s? de zoas
+	//Vamos fazer um Ajax só de zoas
 	ajax = new XMLHttpRequest();		
 	//Pega uma um array de estados com array de cidades Cortesia do gitzeiro: @letanure
 	ajax.open('GET', 'https://gist.githubusercontent.com/letanure/3012978/raw/36fc21d9e2fc45c078e0e0e07cce3c81965db8f9/estados-cidades.json', true);
@@ -47,7 +47,7 @@
 		}
 	}
 	
-	//Monitra o evento Change, e assim que ocorrer altera??o, exibe as cidades do mesmo (aproveitando a mesma requisi??o (var json))
+	//Monitra o evento Change, e assim que ocorrer alteração, exibe as cidades do mesmo (aproveitando a mesma requisição (var json))
 	document.getElementById('uf').addEventListener('change', function() {	
 		//Pega o Estado que o cara selecionou... Ex: 'SP'
 		var ufSelecionado = this.value;
@@ -77,7 +77,7 @@
 					//Insere no Select a tag criada			
 					selectCidades.appendChild(option);
 					
-					//Retira a condi??o de 'Esconder'
+					//Retira a condição de 'Esconder'
 					selectCidades.style.display = null;
 				}
 			}
