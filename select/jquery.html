@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Exemplo com jQuery</title>
+</head>
+<body>
+
+<select name="uf" id="uf">
+	<option value="">-- Escolha o Estado --</option>	
+</select>
+
+<select name="cidade" id="cidade" style="display:none;"></select> <!-- Só exibe depois que selecionar o estado -->
+	
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		//json é uma variavel 'global'
+		var jsonGlobal;
+		
+		//verificar
+		$.ajax({
+			 url: 'https://gist.githubusercontent.com/letanure/3012978/raw/36fc21d9e2fc45c078e0e0e07cce3c81965db8f9/estados-cidades.json'
+			,type:'GET'
+			,dataType: 'json'
+			,success: function(json){
+				//Fala que o json a Var global json (window.json) é json
+				window.json = json;
+				
+				var seletorUf = $("#uf");
+				for(i in json.estados){
+					var estado = json.estados[i];
+					$("<option />", {value: estado.sigla, text: estado.nome}).appendTo(seletorUf);
+				}
+			}
+			,error: function(json){
+				//console.log(json);
+			}
+		});
+		
+		$( "#uf" ).bind( "change", function() {
+			var ufSelecionado = $( this ).val();
+			
+			var selectCidades = $("#cidade");
+			selectCidades.empty();
+			selectCidades.show();
+			
+			//Percorre todo o Loop de estados
+			for(i in json.estados){
+				var estado = json.estados[i];			
+				
+				//Caso a sigla seja a mesma selecionada
+				if(estado.sigla == ufSelecionado){					
+					for(x in estado.cidades){
+						var cidade = estado.cidades[x];						
+						$("<option />", {value: x, text: cidade}).appendTo(selectCidades);
+					}
+					
+					//Break loop (Improve performace?)
+					return false;
+				}
+			}			
+		});	
+	});
+</script>
+</body>
+</html>
