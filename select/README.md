@@ -10,7 +10,7 @@ HTML eu fiz os select só que não sei como ficaria os script pra isso, alguém 
      <option value="RJ">Rio de Janeiro</option>
      <option value="MS">Mato Grosso do Sul</option>
 </select>
-<!--Caso selecione SP por exemplo aparece as Cidades Dynamics!....->
+<!--Caso selecione SP por exemplo aparece as Cidades Dynamics!....-->
 <p>Cidades:</p>
 <select name="cidades" id="cidades">
      <option value="">Selecione a Cidade</option>
