@@ -19,8 +19,16 @@ HTML eu fiz os select só que não sei como ficaria os script pra isso, alguém 
 </select><hr />
 ```
 
-Resposta:
+Resposta (JS-Vanilla):
 https://github.com/gabrieldarezzo/desafiosInternos/blob/master/select/index.html
 
-Live: 
+Resposta (JS-Vanilla):
 http://gabrieldarezzo.github.io/desafiosInternos/select/index.html
+
+(New - Jquery)
+
+Resposta (jQuery):
+https://github.com/gabrieldarezzo/desafiosInternos/blob/master/select/jquery.html
+
+Resposta (jQuery):
+http://gabrieldarezzo.github.io/desafiosInternos/select/jquery.html
