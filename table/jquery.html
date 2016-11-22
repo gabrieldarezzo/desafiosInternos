@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+
+<table>
+	<tbody id="body-table">
+		<tr>
+			<td>QTD</td>
+			<td>VALOR UNITARIO</td>
+			<td>SUB TOTAL</td>
+		</tr>
+		<tr>
+			<td><input type="text" class="updateFields qtd" name="qtd[]"/></td>
+			<td><input type="text" class="updateFields valorunitario" name="valorunitario[]" /></td>
+			<td><input type="text" class="updateFields valorsubtotal" name="valorsubtotal[]" /></td>
+		</tr>
+		<tr>
+			<td><input type="text" class="updateFields qtd" name="qtd[]"/></td>
+			<td><input type="text" class="updateFields valorunitario" name="valorunitario[]" /></td>
+			<td><input type="text" class="updateFields valorsubtotal" name="valorsubtotal[]" /></td>
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="2" style="text-align:center">Total:</td>
+			<td><input type="text" id="total" name="total" /></td>
+		</tr>
+	</tfoot>
+</table>
+<br />
+<br />
+<br />
+<button id="btn-addCell">Adicionar Cell</button>
+
+
+<hr />
+<br />
+<button id="btn-acao">Atualizar</button>
+
+<script type="text/javascript">
+
+	document.getElementById("btn-addCell").addEventListener('click', function() {
+        var inputQtd = document.createElement('input');
+		inputQtd.setAttribute('type', 'text');
+		inputQtd.className = 'updateFields qtd';		
+		inputQtd.setAttribute('name', 'qtd[]');
+		
+		var tdQtd = document.createElement('td');
+		tdQtd.appendChild(inputQtd);
+		
+		var inpuUnit = document.createElement('input');
+		inpuUnit.setAttribute('type', 'text');
+		inpuUnit.className = 'updateFields valorunitario';		
+		inpuUnit.setAttribute('name', 'valorunitario[]');
+		
+		var tdUnit = document.createElement('td');
+		tdUnit.appendChild(inpuUnit);
+		
+		var inpuSubTotal = document.createElement('input');
+		inpuSubTotal.setAttribute('type', 'text');
+		inpuSubTotal.className = 'updateFields valorsubtotal';		
+		inpuSubTotal.setAttribute('name', 'valorsubtotal[]');
+		
+		var tdSubTotal = document.createElement('td');
+		tdSubTotal.appendChild(inpuSubTotal);
+		
+		
+		
+		var tr = document.createElement('tr');
+		tr.appendChild(tdQtd);
+		tr.appendChild(tdUnit);
+		tr.appendChild(tdSubTotal);
+		
+		document.getElementById("body-table").appendChild(tr);
+		updateFields();
+	});	
+	
+	
+	function getFieldNameByClass(classes){
+		classesArr = classes.split(" ");
+		for(x in classesArr){
+			if(classesArr[x] == 'qtd') return 'qtd';				
+			if(classesArr[x] == 'valorunitario') return 'valorunitario';				
+			if(classesArr[x] == 'valorsubtotal') return 'valorsubtotal';				
+		}
+	}	
+	
+	//Encapsulamos para poder chamar em outro contexto
+	var updateFields = function(){
+		var fields = document.getElementsByClassName("updateFields");
+		for (var i = 0; i < fields.length; i++) {
+			fields[i].addEventListener('keyup',  function() {
+				var thisTr = this.parentElement.parentElement;
+				var tdChilds = thisTr.childNodes;
+				
+				var subTotalLinha = {};
+				for(var y = 0;y < tdChilds.length; y++){
+					
+					//Pega apenas os Node reais
+					if(tdChilds[y].nodeType == tdChilds[y].ELEMENT_NODE){
+						//Dentro do Node (td) navega até o input td->input
+						var input = tdChilds[y].childNodes[0];
+											
+						var inputName = getFieldNameByClass(input.className);
+						subTotalLinha[inputName] = input.value;
+						//Deixa a referencia ao node, para atualizar após a conta
+						if(inputName == 'valorsubtotal'){
+							subTotalLinha['nodeRef'] = input;
+						}
+					}
+				}
+				
+				//is Defined or null?
+				if(subTotalLinha['qtd'] == null || subTotalLinha['qtd'] == '') return false;
+				if(subTotalLinha['valorunitario'] == null || subTotalLinha['valorunitario'] == '') return false;
+				
+				var qtd = parseInt(subTotalLinha['qtd']);
+				var valorunitario = parseInt(subTotalLinha['valorunitario']);			
+				
+				var subTotal = qtd * valorunitario;			
+				subTotalLinha['nodeRef'].value = subTotal;		
+				
+				
+				//Vamos somar todos os campos a classe valorsubtotal
+				var subtotalFields = document.getElementsByClassName("valorsubtotal");
+				var total = 0;
+				for(var i = 0; i < subtotalFields.length; i++){
+					if(subtotalFields[i].value != ''){
+						total += parseInt(subtotalFields[i].value);
+					}
+				}
+				//Agora atualiza o campo 'Total'
+				document.getElementById("total").value = total;
+			}, false);
+		}
+	}
+	
+	
+	updateFields();
+		
+	
+	
+
+
+</script>
+</body>
+</html>
