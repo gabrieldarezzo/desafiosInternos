@@ -22,7 +22,7 @@ HTML eu fiz os select só que não sei como ficaria os script pra isso, alguém 
 Resposta (JS-Vanilla):
 https://github.com/gabrieldarezzo/desafiosInternos/blob/master/select/index.html
 
-Resposta (JS-Vanilla):
+Live Demo (JS-Vanilla):
 http://gabrieldarezzo.github.io/desafiosInternos/select/index.html
 
 (New - Jquery)
@@ -30,5 +30,5 @@ http://gabrieldarezzo.github.io/desafiosInternos/select/index.html
 Resposta (jQuery):
 https://github.com/gabrieldarezzo/desafiosInternos/blob/master/select/jquery.html
 
-Resposta (jQuery):
+Live Demo (jQuery):
 http://gabrieldarezzo.github.io/desafiosInternos/select/jquery.html
