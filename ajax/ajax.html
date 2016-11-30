@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Ajax Exemplo com Ajax</title>
+	
+</head>
+<body>
+
+	<button id="btn-action">Ajax, ATIVAR!</button>
+	
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+		
+			$( "#btn-action" ).bind( "click", function() {
+				$.ajax({
+					 url: 'contato.php'
+					,data: $('#js-dados *').serialize()
+					,type:'POST'
+					,dataType: 'json'
+					,success: function(json){
+						
+						if(!json.status){
+							alert(json.msg);
+						} else {
+							
+							for(x in json.dados){
+								// json.dados[x];
+								// console.log(json.dados[x]);
+								alert(json.dados[x].NOME);
+							}
+							
+						}
+						
+						return true;
+					}
+					,error: function(json){
+						console.log(json);
+					}
+				});
+			});
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Ajax Exemplo com Ajax</title>
+	
+</head>
+<body>
+
+	<!-- Botão que vamos monitorar a partir do seu atributo id (id="btn-action") -->
+	<button id="btn-action">Click-me</button>
+	
+	<!-- jQuery cdn -->
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+	
+	<!-- Abrimos o bloco de JavaScript logo após a chamada do script de jQuery-->
+	<script type="text/javascript">
+		
+		/*O codigo abaixo garante que o jQuery está pronto para ser executado.*/
+		$(document).ready(function() {
+		
+			//Aqui monitoramos pelo seletor '$( "#btn-action" )' o evento 'click', assim que o evento ocorrer a function() é chamada...
+			$( "#btn-action" ).bind( "click", function() {
+				alert(1);
+			});
+		
+		});
+	</script>
+</body>
+</html>

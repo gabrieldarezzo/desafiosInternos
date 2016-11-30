@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Ajax Exemplo com Ajax</title>
+	
+</head>
+<body>
+
+	<!-- Campo que vamos alterar -->
+	<input type="text" name="textao_do_feice" id="textao_do_feice" value="aqui é o texto antigo..."/>
+	
+	<!-- Nosso botãozinho maroto que dispara a ação -->
+	<button id="btn-action">Mudar - Texto</button>
+	
+	
+	<!-- jQuery cdn -->
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		
+		$(document).ready(function() {		
+			$( "#btn-action" ).bind( "click", function() {
+			
+				//Seletor -> '$( "#textao_do_feice" )'
+				//Seletor -> Tudo passado dentro do val({DENTRO_DO_VAL}) é inserido dentro do atributo value....
+				//Caso não entendeu clica no botão 'Mudar - Texto' que você entende ....
+				$( "#textao_do_feice" ).val('O texto novo é esse...');
+			});		
+		});
+	</script>
+</body>
+</html>
