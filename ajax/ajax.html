@@ -2,12 +2,15 @@
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<title>Ajax Exemplo com Ajax</title>
+	<title>Ajax Exemplo com TOP</title>
 	
 </head>
 <body>
-
-	<button id="btn-action">Ajax, ATIVAR!</button>
+	<input type="text" name="textao_do_feice" id="textao_do_feice" value="aqui é o texto antigo..."/>
+	<hr />
+	<button id="btn-action">Ajax, Test!</button>
+	
+	
 	
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 	<script type="text/javascript">
@@ -15,25 +18,12 @@
 		
 			$( "#btn-action" ).bind( "click", function() {
 				$.ajax({
-					 url: 'contato.php'
-					,data: $('#js-dados *').serialize()
-					,type:'POST'
-					,dataType: 'json'
-					,success: function(json){
-						
-						if(!json.status){
-							alert(json.msg);
-						} else {
-							
-							for(x in json.dados){
-								// json.dados[x];
-								// console.log(json.dados[x]);
-								alert(json.dados[x].NOME);
-							}
-							
-						}
-						
-						return true;
+					 url: 'arquivo.txt'
+					,type:'GET'
+					,dataType: 'html'
+					,success: function(resposta){
+						$( "#textao_do_feice" ).val(resposta);
+						//return true;
 					}
 					,error: function(json){
 						console.log(json);
