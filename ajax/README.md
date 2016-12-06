@@ -252,7 +252,19 @@ try{
 -- As vezes você nem sabe onde caralhos o problema está....  
 Entenda como monitorar a requisição, acompanhando  o que foi enviado **(GET/POST/HEADER)** e o que foi respondido (Response)..  
 Exemplo Abaixo pratico:  
-![Fluxo de Debbug](https://gabrieldarezzo.github.io/imasters/img/ajax_fluxo.png)
+![Fluxo de Debbug](https://gabrieldarezzo.github.io/imasters/img/ajax_fluxo.png)  
+
+
+## 6 (Bonus) 
+-- Exemplo pratico de Ajax.... (Pegar o CEP):  
+Live Code:  
+http://gabrieldarezzo.github.io/busca_cep/  
+  
+Code:  
+https://github.com/gabrieldarezzo/gabrieldarezzo.github.io/blob/master/busca_cep/index.html  
+
+
+
 	
 Mais motivos para utilizar o Chrome:  
 https://www.youtube.com/playlist?list=PLOU2XLYxmsILUKyjDYUVYLeq7yyTxM_3d
