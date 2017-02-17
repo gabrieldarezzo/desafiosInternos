@@ -1,4 +1,4 @@
-#Como Inativar um registro do sistema e mantê-lo  no banco de dados
+# Como Inativar um registro do sistema e mantê-lo  no banco de dados
 
 https://forum.imasters.com.br/topic/555907-como-inativar-um-registro-do-sistema-mas-mant%C3%AA-lo-no-banco-de-dados/?do=findComment&comment=2217595
 
@@ -61,16 +61,44 @@ mysql> SELECT * FROM blog_imasters where excluido  = 1;
 
 
 
-##@Dica bonus: 
+### @Dica bonus: 
 Utilize o carinha abaixo para ter o datetime da ultima ateração, assim sempre que ocorrer uma alteração você tem a data/hora + pessoa que alterou (Independente se foi exclusão ou não)
 ```sql 
-CREATE TABLE blog_imasters(
-	 alterado_por /* Ou pode ser o _id da tabela referenciado o user que exclui como FOREING KEY*/
-	,alterado_em varchar(100) DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-	...
-	...
+CREATE TABLE blog_imasters_alterado(
+	 nome VARCHAR(50)
+    ,alterado_por VARCHAR(50) /* Ou pode ser o _id da tabela referenciado o user que exclui como FOREING KEY*/
+    ,alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP    
 );
 ```
 
+Bora Inserir alguem...
+```sql
+INSERT INTO blog_imasters_alterado(nome, alterado_por) VALUES ('Ronaldinho', 'GABRIEL');
+```
+```
+mysql> SELECT * FROM blog_imasters_alterado;
++------------+--------------+---------------------+
+| nome       | alterado_por | alterado_em         |
++------------+--------------+---------------------+
+| Ronaldinho | GABRIEL      | 2017-02-17 11:08:36 |
++------------+--------------+---------------------+
+```
+
+Repare no alterado_em = **"2017-02-17 11:08:36"**
+Agora vamos alterar apenas o nome para 'Ronaldinho Gaucho'
+
+```sql
+UPDATE blog_imasters_alterado SET nome = 'Ronaldinho Gaucho', alterado_por = 'JOSE'
+```
+```
+mysql> SELECT * FROM blog_imasters_alterado;
++-------------------+--------------+---------------------+
+| nome              | alterado_por | alterado_em         |
++-------------------+--------------+---------------------+
+| Ronaldinho Gaucho | JOSE         | 2017-02-17 11:10:15 |
++-------------------+--------------+---------------------+
+```
 
 
+EPIC WIN! Alterado_em = **"2017-02-17 11:10:15"** (Sendo que o UPDATE foi feito **apenas** nas colunas **(nome, alterado_por)**
+Pois a coluna alterado_em tem instrução de ```ON UPDATE CURRENT_TIMESTAMP```
