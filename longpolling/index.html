@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<div id="response"></div>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+	
+		function getContent(timestamp){
+			var queryString = { 'timestamp' : timestamp };
+		 
+			$.get ( 'server.php' , queryString , function ( data ){
+				var obj = jQuery.parseJSON( data );
+				$( '#response' ).html( obj.content );
+		 
+				// reconecta ao receber uma resposta do servidor
+				getContent( obj.timestamp );
+			});
+		}
+		 
+		$( document ).ready ( function (){
+			getContent();
+		});
+	
+	</script>
+</body>
+</html>

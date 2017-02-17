@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Teste com Filtros passando pela URL</title>
+	<style type="text/css">
+		label{
+			display: block;
+		}
+	</style>
+	
+	<link rel="stylesheet" href="spinner.css" />
+</head>
+<body>
+
+	<div id="spinner-container">
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	  <p class="spinner"></p>
+	</div>
+	<ul id="filtros-ui" style="visibility: hidden;">	
+		<li>
+			<label>
+				<input type="checkbox" value="exibir_data" class="checkFiltro" /> Data
+			</label>
+		</li>
+		<li>
+			<label>
+				<input type="checkbox" value="exibir_prox" class="checkFiltro" /> Prox
+			</label>
+		</li>
+	</ul>
+
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+		
+			var arrUrl = {
+				 modulo 				: getParameterInUrlByName('modulo', location.search)
+				,act					: getParameterInUrlByName('act', location.search)
+				,exibir_prox			: getParameterInUrlByName('exibir_prox', location.search)
+				,exibir_data			: getParameterInUrlByName('exibir_data', location.search)
+			};
+		
+			$( ".checkFiltro" ).bind( "click", function() {
+				var filtro = $( this ).val();
+				
+				if($(this).prop('checked') == true){
+					var urlEncoded = setParameterByName(arrUrl, filtro, '1');
+				} else {
+					var urlEncoded = setParameterByName(arrUrl, filtro, '0');
+				}
+				
+				//console.log(url);
+				location.href = location.origin + location.pathname + '?' + urlEncoded;
+			});
+			
+			
+			//Percorre todos os filtros e seta checked os que estão na URL
+			$( ".checkFiltro" ).each(function() {
+				var estadoUrl = getParameterInUrlByName($( this ).val(), location.search);
+				//console.log(estadoUrl);
+				
+				if(estadoUrl == '1'){
+					$( this ).prop('checked', true);
+				}
+				
+				setTimeout(function(){ 
+					$( "#spinner-container" ).hide();
+					$( "#filtros-ui" ).css({'visibility' : 'visible'});
+
+				}, 800);
+			});
+			
+		
+			
+			
+			function getParameterInUrlByName(name, url) {
+				if (!url) url = window.location.href;
+				name = name.replace(/[\[\]]/g, "\\$&");
+				var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+					results = regex.exec(url);
+				if (!results) return null;
+				if (!results[2]) return '';
+				return decodeURIComponent(results[2].replace(/\+/g, " "));
+			}
+
+			//Percorre todo global array(arrUrl), e retorna ele mesmo + os parametros encodados
+			function setParameterByName(arrUrl, param, val){					
+				for(attUrl in arrUrl){
+					var content = getParameterInUrlByName(attUrl, location.search);					
+					//console.log(content);					
+					arrUrl[attUrl] = content;
+					
+					if(arrUrl[attUrl] === null || arrUrl[attUrl] === ''){
+						delete arrUrl[attUrl];
+					}
+				}
+				arrUrl[param] = val;
+				
+				return $.param( arrUrl );
+			}
+		});
+	</script>
+	
+</body>
+</html>
