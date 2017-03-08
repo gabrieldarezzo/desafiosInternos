@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Ajax (GettingError) in Vanilla + timeout with callBack</title>
+	<meta name="keywords" content="HTML,JS,JsVanilla, ajax, getting error in ajax, Vanilla,CEP, WebService,Estudo Js,Endereço Automatico">
+	
+	<style type="text/css">
+		label{
+			display: block;		
+		}		
+		.big-field{
+			width: 100%;
+			max-width: 310px;
+		}
+	</style>
+</head>
+<body>
+
+
+	<h5>Exemplo de Ajax</h5>
+
+	<label for="cep">Cep</label>
+	<input type="tel" placeholder="Informe o Cep" id="cep" name="cep" maxlength="8">
+	<button id="btn-end-ajax">Buscar Endereço</button>
+	
+		
+	<label for="uf" >UF</label>
+	<input type="text" placeholder="UF" name="uf" id="uf">
+	
+
+	<label for="cidade" >Cidade</label>
+	<input type="text" placeholder="Informe a cidade" id="cidade" name="cidade">
+		
+	<label for="bairro" >Bairro</label>
+	<input type="text" placeholder="Informe o Bairro" name="bairro" id="bairro">
+	
+	
+	<label for="endereco" >Endereço</label>
+	<input type="text" class="big-field" placeholder="Informe o seu Endereço Ex:(Rua da Consolação)" name="endereco" id="endereco">
+	
+	<label for="nr_end" >Número</label>
+	<input type="text" class="big-field" placeholder="Informe o número do endereço" name="nr_end" id="nr_end">
+	
+	<hr />
+	
+	
+	<script type="text/javascript">
+		//Já inicia no campo 'Cep'
+		document.getElementById('cep').focus();
+	
+		//Monitora o botão btn-end-ajax
+		document.getElementById("btn-end-ajax").addEventListener("click", function() {
+			
+			//Pega apenas os números por regExp
+			var cep = document.getElementById("cep").value.replace(/[^0-9]/, "");
+			
+			//Valida cep
+			if(cep == '' || cep.length != 8){
+				alert('Cep não está válido.');
+				return false;
+			}
+		
+			var ajax = new XMLHttpRequest();			
+			var url = "https://viacep.com.br/ws/" + cep + "/json/";
+			
+			ajax.onreadystatechange = function() {
+				if (ajax.readyState == XMLHttpRequest.DONE ) {
+					if (ajax.status == 200) {
+						var json = JSON.parse(ajax.responseText);							
+					   
+						document.getElementById('cep').value = json.cep;
+						document.getElementById('endereco').value = json.logradouro;
+						document.getElementById('bairro').value = json.bairro;
+						document.getElementById('cidade').value = json.localidade;
+						document.getElementById('uf').value = json.uf;
+						document.getElementById('nr_end').focus();
+					} else {
+					   alert('HTTP Not 200 :( ');
+					}
+				}
+			};
+			ajax.timeout = 4000; // time in milliseconds == 2 segundos		
+			ajax.ontimeout = function (e) {				
+				alert('Tempo de execução excedido');
+			};
+			
+			ajax.open('GET', url, true);
+			ajax.send();
+		});
+	
+
+		
+		
+	</script>
+	
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<form id="my-form" action="" method="post" onsubmit="return validaRadio();">
+		<h1 >Exemplo2 de Check pelo seletor (.class)</h1>
+		
+		<div class="option-list">
+			<h3>Pegar o Ônibus ou comprar a Goiaba?</h3>
+			<label>
+				<input type="radio" name="escolha" class="radioCheck" value="goiaba" /> Goiaba
+			</label>
+			<br />
+			<label>
+				<input type="radio" name="escolha" class="radioCheck" value="onibus" /> Ônibus
+			</label>
+		</div>
+		
+		
+		<div class="option-list">
+			<h3>Escolha um framework - Js?</h3>
+			<label>
+				<input type="radio" name="frameworkjs" class="radioCheck" value="angularjs" /> AngularJs
+			</label>
+			<br />
+			<label>
+				<input type="radio" name="frameworkjs" class="radioCheck" value="vuejs" /> VueJs
+			</label>
+		</div>
+			
+		
+		<br />
+		<hr />
+		<button id="btn-acao">Cadastrar</button>
+	</form>
+	
+	<script type="text/javascript">
+		function validaRadio(){
+		
+			var grupo = document.getElementsByClassName("option-list");
+			
+			//Vamos capturar todos os elementos dinamicamente que tem a classe radioCheck
+			for (var i = 0; i < grupo.length; i++) {
+				var atLastOneChecked = false;
+				var texto = grupo[i].getElementsByTagName("h3")[0].textContent;
+				var radioToCheck = grupo[i].getElementsByClassName("radioCheck");
+				
+				//Vamos capturar todos os elementos dinamicamente que tem a classe radioCheck
+				for (var x = 0; x < radioToCheck.length; x++) {					
+					if(radioToCheck[i] != null && radioToCheck[x].checked !== false){
+						atLastOneChecked = true;
+					}
+				}
+				
+				if(!atLastOneChecked){
+					alert(texto);
+					return false;
+				}
+			}
+		}
+	</script>
+</body>
+</html>

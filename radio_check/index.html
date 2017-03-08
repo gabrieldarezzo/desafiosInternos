@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	
+	<form id="my-form" action="recebe.php" method="post">
+	
+	
+		<h1>Exemplo de Check pelo seletor (.class)</h1>
+		
+		<h3>Faça sua escolha:</h3>
+		<label>
+			<input type="radio" name="escolha" class="radioCheck" value="goiaba" /> Goiaba
+		</label>
+		<br />
+		<label>
+			<input type="radio" name="escolha" class="radioCheck" value="onibus" /> Ônibus
+		</label>
+		
+		
+		<h3>Escolha um framework - Js:</h3>
+		<label>
+			<input type="radio" name="frameworkjs" class="radioCheck" value="angularjs" /> AngularJs
+		</label>
+		<br />
+		<label>
+			<input type="radio" name="frameworkjs" class="radioCheck" value="vuejs" /> VueJs
+		</label>
+		
+		
+		<br />
+		<hr />
+		
+	
+	
+		<input type="submit" value="Enviar" />		
+	</form>
+	
+	
+	<hr style="margin-top: 50px;"/>
+	Pergunta: <a href="https://forum.imasters.com.br/topic/556608-valida%C3%A7%C3%A3o-radio-button/">http://forum.imasters.com.br/topic/556608</a>
+	
+	
+	
+	
+	
+	
+	<script type="text/javascript">
+	
+	
+		document.getElementById("my-form").addEventListener("submit", function(e) {
+		
+			
+		
+		
+			var radioUniqueByName = [];		
+			var lastRadioUniqueByName = '';
+			var classname = document.getElementsByClassName("radioCheck");
+			
+			//Vamos capturar todos os elementos dinamicamente que tem a classe radioCheck
+			for (var i = 0; i < classname.length; i++) {
+				var nameOfRadio = classname[i].getAttribute('name');
+				
+				if(nameOfRadio != lastRadioUniqueByName){
+					radioUniqueByName.push(nameOfRadio);
+				}
+				
+				lastRadioUniqueByName = nameOfRadio;
+			}
+			
+			//Agora vamos percorrer todos os radiosButtons e ter certeza que ao menos um dos Radios esta 'checked'.
+			for(var i in radioUniqueByName){
+				
+				var atLastOneChecked = false;
+				
+				var uniqueRadio = radioUniqueByName[i];
+				var elementToCheck = document.getElementsByName(uniqueRadio);
+				
+				//for(x in elementToCheck){
+				for (var x = 0; x < classname.length; x++) {					
+				
+					// elementToCheck[x] != null  -> Evita erro de undefined
+					if(elementToCheck[x] != null && elementToCheck[x].checked !== false){
+						//Tem um elemento checado
+						atLastOneChecked = true;
+					}
+					
+				}
+				
+				//Se não tiver ao menos um checkado para a execução e retorna como false
+				if(!atLastOneChecked){
+					alert("Selecione o campo -> " + uniqueRadio);
+					e.preventDefault();
+					return false;
+				}
+			}
+		});
+		
+		
+	</script>
+</body>
+</html>

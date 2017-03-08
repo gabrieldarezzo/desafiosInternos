@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+
+<form method="post" action="upload_file.php" enctype="multipart/form-data">
+	
+	<h3>Arquivos:</h3>
+		
+	<div id="arquivos">
+		<input type="file" name="arquivo[]" /><br>
+		<input type="file" name="arquivo[]" /><br>
+	</div>
+	
+	<br />
+	<br />
+	<!--
+	<button id="cloneUpload">Outro arquivo</button>
+	-->
+	
+	
+	<hr />
+	<input type="submit" value="Enviar" />
+	
+</form>
+
+<div class="progress">
+	<div class="bar"></div >
+	<div class="percent">0%</div >
+</div>
+<div id="status"></div>
+	
+	
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/jquery.form/4.0.1/jquery.form.min.js" integrity="sha384-MSBAlvUdugJfNRlgXmRfwPbw7SNanf6IaKgQBi1ajJdWoZ9oUYhxC79B5n4gp3y5" crossorigin="anonymous"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+	
+		var bar = $('.bar');
+		var percent = $('.percent');
+		var status = $('#status');
+		   
+		$('form').ajaxForm({
+			beforeSend: function() {
+				status.empty();
+				var percentVal = '0%';
+				bar.width(percentVal)
+				percent.html(percentVal);
+			},
+			uploadProgress: function(event, position, total, percentComplete) {
+				var percentVal = percentComplete + '%';
+				bar.width(percentVal)
+				percent.html(percentVal);
+				//console.log(percentVal, position, total);
+			},
+			success: function() {
+				var percentVal = '100%';
+				bar.width(percentVal)
+				percent.html(percentVal);
+			},
+			complete: function(xhr) {
+				status.html(xhr.responseText);
+			}
+		}); 
+				
+	
+		
+	});
+</script>
+</body>
+</html>

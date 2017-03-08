@@ -1,0 +1,1 @@
+Cria uma função Ajax recursiva que recebe um array de URLS e alterna o resultado dos textos com o setInterval()

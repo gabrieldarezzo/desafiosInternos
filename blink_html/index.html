@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<div id="id_element"></div>
+	
+	<script type="text/javascript">		
+		
+		function recursiveAjax(arraySitesLoad){			
+		
+			var ajax = new XMLHttpRequest();			
+			var url = arraySitesLoad[arraySitesLoad.length - 1];
+			ajax.open('GET', url, true);
+			ajax.send();
+			
+			ajax.onreadystatechange = function() {
+				//console.log(url);
+				//console.log(ajax.readyState);
+				if(ajax.readyState == 4) {
+					//Se retornou true...
+					if(ajax.status == 200){
+						arrTextos.push(ajax.responseText);
+						console.log(arrTextos);
+					}
+					
+					//console.log(arrTextos);
+					arraySitesLoad.pop();					
+					if(arraySitesLoad.length > 0){
+						recursiveAjax(arraySitesLoad);
+					}		
+				}
+			}
+		}
+		
+		var arrTextos = ["<strong>Aguarde...</strong>"];
+		
+		
+		var i = 0;
+		document.getElementById("id_element").innerHTML = arrTextos[0];
+		
+		
+		urlsToLoad = ['texto_1.html', 'texto_2.html', 'texto_3.html'];
+		
+		recursiveAjax(urlsToLoad);
+		
+		setInterval(function() {
+			//console.log(arrTextos[i]);			
+			
+			document.getElementById("id_element").innerHTML = arrTextos[i];
+			
+			if(arrTextos.length !== (i + 1)){
+				i++;
+			} else {
+				i = 1;
+			}
+		}, 2000);
+	</script>
+</body>
+</html>
