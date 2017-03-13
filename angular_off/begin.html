@@ -1,0 +1,73 @@
+<div class="section">
+	<div class="row">
+		<div class="col s12">
+			<p>
+				<input id="online" value="1" ng-model="Login.isOnline" name="is-online" type="radio" checked="checked"/>
+				<label for="online">Online</label>
+			</p>
+			<p>
+				<input id="offline" value="0" ng-model="Login.isOnline" name="is-online" type="radio" />
+				<label for="offline">Force Offline</label>
+			</p>
+		</div>
+		<div class="col s12" style="display:none">
+			{{Login.isOnline}}
+		</div>
+		
+		
+        <div class="col s12">
+			<p>Teste de persistência offline</p>
+
+			<br />
+			<button class="btn btn-large green waves-effect waves-light col s12" ng-click="Login.exibirRecados()">Pegar Recados</button>
+		</div>
+	</div>
+	
+	<div class="row">
+		<!--
+			var recados = [];
+			recados.push({
+				 id : 1
+				,title : "Olá sumida"
+				,message : "vamos marcar alguma coisa?"
+			});
+			recados.push({
+				 id : 2
+				,title : "Nossa que saudades!"
+				,message : "Fico lembrando de você :("
+			});
+			recados.push({
+				 id : 3
+				,title : "Precisamos conversar!"
+				,message : "Você não para de falar com essas suas 'amiguinhas'"
+			});
+			//Cast array to Json-format
+			
+			JSON.stringify(recados);
+			/*
+			[{"id":1,"title":"Olá sumida","message":"vamos marcar alguma coisa?"},{"id":2,"title":"Nossa que saudades!","message":"Fico lembrando de você :("},{"id":3,"title":"Precisamos conversar!","message":"Você não para de falar com essas suas 'amiguinhas'"}]
+			*/
+			//Put this in dados/recados.json
+		-->
+		
+			
+		<ul class="collection" ng-repeat="recado in Login.recados">
+			<li class="collection-item avatar">
+				<i class="material-icons green small circle">message</i>
+				<span class="title">{{recado.title}}</span>
+				<p>{{recado.message}}</p>				
+				<a ng-show="recado.offline != null" href="#!" class="secondary-content"><i class="material-icons" style="color: #f70000">wifi_off</i></a>
+				<a ng-show="recado.offline == null" href="#!" class="secondary-content"><i class="material-icons" style="color: #4caf50">wifi</i></a>
+				
+				
+				<p style="font-size: 11px;" ng-show="recado.offline == null">
+					<span style="float: left;">Ultimo Update</span>
+					<span style="float: right;">{{recado.last_update}}</span>
+				</p>
+				
+			</li>
+		</ul>
+	
+	
+	</div>
+</div>

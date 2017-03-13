@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html lang="pt_br" data-ng-app="myApp">
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<title>Teste persistencia Offline</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1.0">
+	<link href="node_modules/materialize-css/css/materialize.min.css" rel="stylesheet" type="text/css" media="screen,projection"/>
+	
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">	
+	
+	
+	<!--
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
+	-->
+	<meta name="format-detection" content="telephone=no">
+	<meta name="msapplication-tap-highlight" content="no">
+</head>
+<body>
+
+	
+	<div class="container" id="mvc" ng-view></div>
+	
+
+	<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="node_modules/angular-route/angular-route.min.js"></script>	
+	<script type="text/javascript">
+	
+		function getActualTime(){
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth()+1; //January is 0!
+			var yyyy = today.getFullYear();
+
+			if(dd<10) {
+				dd='0'+dd
+			} 
+
+			if(mm<10) {
+				mm='0'+mm
+			}
+			return dd+'/'+mm+'/'+yyyy + ' ' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+		}
+		
+		//Where stored data?!
+		var base_url = location.origin + location.pathname + 'dados/';
+		
+		var angular;
+		
+		angular.module('myApp', ['ngRoute', 'Login'])
+			
+			/*
+			.filter('capitalize', function() {
+				return function(input){
+					return capitalize(input);	
+				}
+			})
+			.run(function($location){										
+				//Persist onLine
+				if(localStorage.getItem('modulos') != null && localStorage.getItem('modulos') != ''){
+					$location.path('/aluno/logado');
+					return false;
+				}
+			})
+			*/
+		;
+		
+		angular.module('Login', [])
+			.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider){
+				$routeProvider
+				.when('/', {
+					 templateUrl: 'begin.html'
+					,controller: 'LoginController'			
+					,controllerAs: 'Login'
+				})				
+				;
+				//$httpProvider.interceptors.push('authInterceptor');
+			}])
+			.service('LoginService', LoginService)
+			.controller('LoginController', ['LoginService', '$location', LoginController])
+		;
+		
+		function LoginController(LoginService, $location){			
+			var vm = this;	
+			
+			vm.isOnline = 1;
+			
+			vm.recados = {};
+			vm.exibirRecados = exibirRecados;
+			function exibirRecados(){
+				console.log('Iniciando requisição dos recados');
+				
+				console.log('Chamando o Service do Controller');				
+				
+				//Aux para forçar Teste de Offline (Forçar um 404 por exemplo)
+				
+				LoginService.pegarRecados(vm.isOnline == 1)
+					.then(function successCallback(response) {
+						console.log('Chamada bem sucedida, exibindo na vm, e armazenando no localStorage');
+						var json = response.data;
+
+						//cast response to stringify 
+						localStorage.setItem('recados', JSON.stringify(json));
+						
+						//Show in VM
+						vm.recados = json;	
+						//console.log(json);
+						
+						var nowTime = getActualTime();						
+						for(var i = 0; i < vm.recados.length; i++){							
+							vm.recados[i]['last_update'] = nowTime;
+						}
+
+					}, function errorCallback(response) {
+						console.log('Chamada não sucedida, exibindo na vm o que está na localStorage');
+						
+						//Sem Internet, etc etc puxa do localStorage (Json + parse
+						if(localStorage.getItem('recados') != null){
+							vm.recados = JSON.parse(localStorage.getItem('recados'));									
+							for(var i = 0; i < vm.recados.length; i++){
+								//Seta todos como 'não Sincronizado
+								vm.recados[i]['offline'] = true;
+							}
+						}
+					})
+				;
+			
+			}			
+		}
+		
+		function LoginService($http){			
+			this.pegarRecados = function(isOnline){				
+				if(isOnline){
+					const request 	= {
+						 url	: base_url + 'recados.json'
+						,method : 'GET'
+						//,data	: data
+					};
+					return $http(request);
+				} else {
+					//Força um 404
+					const request 	= {
+						 url	: base_url + 'recados404.json'
+						,method : 'GET'
+						//,data	: data
+					};
+					return $http(request);
+				}
+			};
+		}
+	</script>
+</body>
+</html>
