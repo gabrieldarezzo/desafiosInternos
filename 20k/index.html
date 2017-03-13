@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+
+<button id="btn-send">Click</button>
+<body>
+	
+	<script type="text/javascript">
+	
+		
+		document.getElementById("btn-send").addEventListener("click", function() {
+		
+			document.getElementById("btn-send").setAttribute("disabled", true);
+			
+			
+			var emails = popFields();
+			var emailsLength = emails.length;
+			var arrAux = [];
+			var lastIndex = 0;
+			
+			for(var i = 0; i < emailsLength; i++){
+			
+				//Avoid Undefined(2)
+				if(arrAux[lastIndex] == null){
+					arrAux[lastIndex] = [];
+				}
+									
+				if(arrAux[lastIndex].length < 2500){
+					arrAux[lastIndex].push(emails[i]);
+				} else {
+					lastIndex++;
+					
+					//Avoid Undefined(2)
+					if(arrAux[lastIndex] == null){
+						arrAux[lastIndex] = [];
+					}
+					arrAux[lastIndex].push(emails[i]);
+				}
+			}
+			//Exemplo de Debug
+			//console.log('x->', decodeURIComponent(arrAux[0][2499]));
+			//console.log('x->', decodeURIComponent(arrAux[1][2499]));
+			
+			
+			//Qnt de Ajax recursivos
+			ajaxToDo = [];			
+			for(x in arrAux){					
+				ajaxToDo.push({
+					 url : 'recebe.php'
+					,data : arrAux[x].join("&") 
+				});
+			}
+			
+			return recursiveAjax(ajaxToDo);
+		});
+		/*
+			@ajaxToDo Recebe um array de *Objetos, que assim que receber a resposta chama o proximo *Objeto do array/fila
+			Exemplo do Object:
+				url : 'URL TO SEND'
+				data : "DATA JÁ PRONTA PARA O POST: EX: 'nome=gabriel&opcao=2'"		
+		*/		
+		function recursiveAjax(ajaxToDo){					
+			var ajax = new XMLHttpRequest();						
+			var url = ajaxToDo[ajaxToDo.length - 1]['url'];
+			
+			console.log('Chamando a URL:' + url + ' ' + (ajaxToDo.length - 1));
+			
+			ajax.onreadystatechange = function() {
+				if (ajax.readyState == XMLHttpRequest.DONE ) {
+					if (ajax.status == 200) {
+						
+						//SUCCESS OR FAIL?!
+						console.log(ajax.responseText);
+						
+						ajaxToDo.pop();					
+						if(ajaxToDo.length > 0){
+							recursiveAjax(ajaxToDo);
+						} else {
+							//End Animation...
+							document.getElementById("btn-send").removeAttribute("disabled");
+						}
+					} else {
+						//Avoid Infite Loop
+						ajaxToDo.pop();					
+					}
+				}
+			};
+			
+			ajax.open('POST', url, true);
+			ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+			ajax.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+			
+			
+			var dataToSend = ajaxToDo[ajaxToDo.length - 1]['data'];
+			ajax.send(dataToSend);
+		}
+		
+	
+		function popFields(){
+			//Vamos simular os E-mails....
+			var inputEmails = [];
+
+			//Testes de Stress..
+			//for(var i = 1; i <=2500;i++){
+			//for(var i = 1; i <=5001;i++){
+			for(var i = 1; i <=20000;i++){
+				inputEmails.push({
+					 name  : 'm[]'
+					,value : 'e'+ i +'@tk.br'
+				});
+			}
+			
+			var emailsToSend = [];
+			for (var i = 0; i < inputEmails.length; i++) {
+				var auxLoop = inputEmails[i].name  + '=' + encodeURIComponent(inputEmails[i].value);
+				emailsToSend.push(auxLoop);
+			}
+			
+			//var data = emailsToSend.join("&"); // Ainda não.. pois quem da o join é a propria requisição do Ajax...
+			//return myCallback(emailsToSend);
+			return emailsToSend;
+		}
+	</script>
+	
+</body>
+</html>

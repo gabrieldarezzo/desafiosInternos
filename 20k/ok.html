@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	
+	<script type="text/javascript">
+		document.getElementById("btn-send").addEventListener("click", function() {
+			
+			popFields(function(emails){
+			
+				var emailsLength = emails.length;
+				
+				var arrAux = [];
+				var lastIndex = 0;
+				for(var i = 0; i < emailsLength; i++){
+				
+					//Avoid Undefined(2)
+					if(arrAux[lastIndex] == null){
+						arrAux[lastIndex] = [];
+					}
+										
+					if(arrAux[lastIndex].length < 2500){
+						arrAux[lastIndex].push(emails[i]);
+					} else {
+						lastIndex++;
+						
+						//Avoid Undefined(2)
+						if(arrAux[lastIndex] == null){
+							arrAux[lastIndex] = [];
+						}
+					
+						arrAux[lastIndex].push(emails[i]);
+					}
+				}
+				//console.log('x->', decodeURIComponent(arrAux[1][2499]));
+				
+				ajaxToDo = [];
+				
+				for(x in arrAux){					
+					ajaxToDo.push({
+						 url : 'recebe.php'
+						,data : arrAux[x].join("&") 
+					});
+				}
+				
+				
+				return recursiveAjax(ajaxToDo);
+			});
+			
+		});
+		
+		function recursiveAjax(ajaxToDo){			
+		
+			var ajax = new XMLHttpRequest();						
+			var url = ajaxToDo[ajaxToDo.length - 1]['url'];
+			
+			ajax.onreadystatechange = function() {
+				if (ajax.readyState == XMLHttpRequest.DONE ) {
+					if (ajax.status == 200) {
+						//console.log(ajax.responseText);
+						
+						ajaxToDo.pop();					
+						if(ajaxToDo.length > 0){
+							recursiveAjax(ajaxToDo);
+						}	
+					}
+				}
+			};
+			
+			ajax.open('POST', url, true);
+			ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+			ajax.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+			
+			
+			var dataToSend = ajaxToDo[ajaxToDo.length - 1]['data'];
+			ajax.send(dataToSend);
+		}
+		
+	
+		function popFields(myCallback){
+			//Pode enviar partir de um array do JS
+			var inputEmails = [];
+
+			//Testes de Stress..
+			//for(var i = 1; i <=2500;i++){
+			//for(var i = 1; i <=5001;i++){
+			for(var i = 1; i <=20000;i++){
+				inputEmails.push({
+					 name  : 'm[]'
+					,value : 'e'+ i +'@tk.br'
+				});
+			}
+			
+			var emailsToSend = [];
+			for (var i = 0; i < inputEmails.length; i++) {
+				var auxLoop = inputEmails[i].name  + '=' + encodeURIComponent(inputEmails[i].value);
+				emailsToSend.push(auxLoop);
+			}
+			
+			//var data = emailsToSend.join("&"); // Ainda não.. pois quem da o join é a propria requisição do Ajax...
+			return myCallback(emailsToSend);
+		}
+		
+		function sendMyAjax(dataToSend){
+			//console.log(dataToSend);
+		
+			var ajax = new XMLHttpRequest();						
+			var url = "recebe.php";
+			
+			ajax.onreadystatechange = function() {
+				if (ajax.readyState == XMLHttpRequest.DONE ) {
+					if (ajax.status == 200) {
+						//console.log(ajax.responseText);
+					}
+				}
+			};
+			
+			ajax.open('POST', url, true);
+			ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+			ajax.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+			
+			ajax.send(dataToSend);
+		
+		}
+	</script>
+	
+</body>
+</html>

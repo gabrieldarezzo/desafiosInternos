@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	
+	<div>
+		<input type="text" name="emails[]" class="sendEmail" value="email1@test.com.br"/>
+		<input type="text" name="emails[]" class="sendEmail" value="email2@test.com.br"/>
+		
+		<button id="btn-send">Enviar</button>
+	</div>
+	
+	<!--
+	<form action="recebe.php" method="POST">
+		<input type="text" name="emails[]" value="email1@test.com.br"/>
+		<input type="submit" value="Enviar" />
+	</form>
+	-->
+	
+	
+	<script type="text/javascript">
+		document.getElementById("btn-send").addEventListener("click", function() {
+			popFields(function(data){
+				return sendMyAjax(data);
+			});
+			
+		});
+	
+		function popFields(myCallback){
+			//Pode enviar partir de um array do JS
+			var inputEmails = [];
+			//for(var i = 1; i <=3000;i++){
+			for(var i = 1; i <=2500;i++){
+			
+				
+				inputEmails.push({
+					 name  : 'm[]'
+					,value : 'e'+ i +'@tk.br'
+				});
+			}
+			
+			
+			var emailsToSend = [];
+			for (var i = 0; i < inputEmails.length; i++) {
+				var auxLoop = inputEmails[i].name  + '=' + encodeURIComponent(inputEmails[i].value);
+				emailsToSend.push(auxLoop);
+			}
+			
+			var data = emailsToSend.join("&");
+			
+			//console.log(data);
+			
+			return myCallback(data);
+		}
+		
+		function sendMyAjax(dataToSend){
+			//console.log(dataToSend);
+		
+			var ajax = new XMLHttpRequest();			
+			//var url = "https://viacep.com.br/ws/" + cep + "/json/";
+			var url = "recebe.php";
+			
+			ajax.onreadystatechange = function() {
+				if (ajax.readyState == XMLHttpRequest.DONE ) {
+					if (ajax.status == 200) {
+						//console.log(ajax.responseText);
+					}
+				}
+			};
+			
+			ajax.open('POST', url, true);
+			ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+			ajax.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+			
+			ajax.send(dataToSend);
+		
+		}
+		
+		
+	
+	
+	
+	</script>
+	
+</body>
+</html>
