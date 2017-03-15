@@ -172,13 +172,15 @@ try {
 
 	if($stmt->execute()){
 		print json_encode(array('status' => true));		
+		die();
 	} else {
 		print json_encode(array('status' => false));
+		die();
 	}
 	
 	
 	//Chegou até aqui da um echo/true
-	print json_encode(array('status' => true));
+	//print json_encode(array('status' => true));
 	
 } catch(Exception $ex){
 	print json_encode(
