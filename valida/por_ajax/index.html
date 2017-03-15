@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Exemplo de tela de validação por AJAX</title>
+
+	<!-- Compiled and minified CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+	
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+	<!--Let browser know website is optimized for mobile-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>	
+	<meta name="description" content="Validação por Ajax, Server Side -> PDO">
+	<meta name="keywords" content="HTML,JS,jQuery,Materialize,Css,Vanilla,CEP, Validation, Estudo Js, WebService">
+	<meta name="author" content="Gabriel Darezzo">
+	<style type="text/css">
+		.container label{
+			color: #2f2f2f
+		}
+	</style>
+</head>
+<body>
+
+
+<div class="container">
+	<!-- Repare que não uso form, apenas uma div#dados-js -->
+	<!-- <form action="#" class="col s12"> -->
+	<div id="dados-js">
+	
+	
+		<div class="row">
+			<h5>Dados Pessoais</h5>
+		</div>
+		
+		<div class="row">
+			<div class="input-field col s12">
+				<i class="material-icons prefix">person_pin</i>
+				<input type="text" name="nome_completo" id="nome_completo" class="validate">
+				<label for="nome_completo">Nome Completo</label>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="input-field col s12">
+				<i class="material-icons prefix">email</i>				
+				<input type="email" name="email" id="email" class="validate">
+				<label for="email"> Informe um E-mail (Login)</label>
+			</div>
+		</div>	
+
+		<div class="row">
+			<div class="input-field col s12">
+				<i class="material-icons prefix">lock</i>
+				<input id="senha" name="senha" type="password" class="validate">
+				<label for="senha">Informe uma senha</label>
+			</div>
+		</div>
+		
+		
+		<div class="row">
+			<div class="input-field col s12">
+				<input type="checkbox" name="termos_aceite" class="filled-in" id="termos_aceite" />
+				<label for="termos_aceite" data-error="obriga" data-success="tolio">Aceito os termos de <a href="#">contrato</a></label>
+			</div>	
+		</div>
+		
+		<div class="row">
+			<div class="input-field col s12">
+				<a class="waves-effect waves-light green btn col s12 center" id="btn-enviar">Enviar</a>
+			</div>	
+		</div>
+		
+		<div class="row">
+			<div class="input-field col s12">
+				
+				<ul class="collection with-header">
+					<li class="collection-header"><h5>Tecnologias:</h5></li>
+					<li class="collection-item">JS</li>
+					<li class="collection-item">HTML</li>					
+					<li class="collection-item">Ajax</li>
+					<li class="collection-item">Consumo de WebService</li>
+					<li class="collection-item">jQuery</li>
+					<li class="collection-item">PHP + PDO</li>
+					<li class="collection-item">PHP + Custom Validation(Field by Field)</li>					
+					<li class="collection-item">CSS With Materialize</li>
+				
+				</ul>
+				
+				<p>Este tutorial é um bonus do 
+				'<a href="https://github.com/gabrieldarezzo/desafiosInternos/tree/master/ajax">Guia definitivo AJAX</a>'
+			</div>
+		</div>
+		
+		
+		
+	
+		
+	</div><!--#/dados-js-->
+	<!-- </form> -->
+</div>
+
+<script src="http://code.jquery.com/jquery-3.0.0.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+	if(window.location.hostname.indexOf('localhost') !== -1){
+		var url = 'http://localhost/desafiosInternos/valida/por_ajax/';
+	} else {
+		var url = 'https://inwork.com.br/clientes/github/desafiosInternos/valida/por_ajax/';
+	}
+	
+	
+	$( "#btn-enviar" ).bind( "click", function() {
+	
+		$.ajax({			 
+			 url: 'validar.php'
+			,data: $('#dados-js *').serialize()
+			,type:'POST'
+			,dataType: 'json'
+			,success: function(json){
+			
+				if(!json.status){
+			
+					var fieldToFocus = '';
+					var messageError = '';
+					if(json.message != null && json.message != ''){
+						var auxMessage = json.message.split('||');
+						fieldToFocus = auxMessage[0];
+						messageError = auxMessage[1];
+					}
+					
+					//console.log(fieldToFocus);
+					//console.log(messageError);
+					
+					var vm = $('#'+fieldToFocus);
+					
+					if(vm.is( "input:checkbox" )){	
+						//Limpa os antigos
+						$( "#box-msg-checkbox" ).remove();
+					
+						var boxMsg = $("<p />", {text: messageError, id : 'box-msg-checkbox'}).css({'color' : '#f44336'});;
+						vm.parent().append(boxMsg);
+					}
+					
+					if(vm.is( "input:text" ) || vm.is( "input:password" ) || vm.attr('type') == 'email' || vm.attr('type') == 'tel'){
+						vm.parent().find('i').css({'color' : '#f44336'});
+						vm.removeClass('valid').addClass('invalid');
+						//Só funcina com a tag attr, data() não rolou.
+						vm.parent().find('label').attr('data-error', messageError).addClass('active');
+					}
+					
+					
+					
+					//console.log(fieldToFocus);
+					//console.log(messageError);
+								
+			
+					//console.log(json);
+				
+					//alert(json.message);
+					return false;
+				}
+				
+				
+				//Chegou aqui foi sucesso
+				alert('Cadastro efetuado com sucesso');
+				//Redirecionar para a pagina ?! 'logado ou algo do genero?
+				
+				
+			}
+			,error: function(json){
+				console.log(json);
+				
+			}
+		});
+	
+	});
+	
+	//$( "#dados-js input" ).bind( "blur", function() {
+	$( ".validate" ).bind( "blur", function() {
+	
+		var vm = $(this);
+	
+		//Da um 'cast' no campo, ex <input type="text" name="nome_completo" value="Gabriel"/> -> 'nome_completo=Gabriel'
+		var dados = $(this).serialize() + '&validar_individual=true';
+		
+		$.ajax({			 
+			 url: 'validar.php'
+			,data: dados
+			,type:'POST'
+			,dataType: 'json'
+			,success: function(json){
+				//console.log(json);
+				//console.log(json.message);
+				
+				var fieldToFocus = '';
+				var messageError = '';
+				if(json.message != null && json.message != ''){
+					var auxMessage = json.message.split('||');
+					fieldToFocus = auxMessage[0];
+					messageError = auxMessage[1];
+				}
+				
+				
+				if(json.status){					
+					vm.parent().find('i').css({'color' : '#4caf50'});					
+					vm.removeClass('invalid').addClass('valid');
+					//vm.parent().find('label').data('success', 'right').addClass('active');
+				
+				} else {
+				
+					vm.parent().find('i').css({'color' : '#f44336'});
+					vm.removeClass('valid').addClass('invalid');
+					//Só funcina com a tag attr, data() não rolou.
+					vm.parent().find('label').attr('data-error', messageError).addClass('active');
+				}
+			}
+			,error: function(json){
+				console.log(json);
+				
+			}
+		});
+	});
+		
+});
+
+</script>
+</body>
+</html>
