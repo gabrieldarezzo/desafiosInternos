@@ -29,7 +29,18 @@ function getConnection() {
 			return $db;
 			
 		} else {
-			die('Prod not set');
+			//Prod Ambiente, assim pode commitar sem medo xD
+			require 'prod_conf.php';
+			
+			
+			$db = new PDO($string_prod, $user_prod, $pass_prod);	
+			
+			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);		
+			$db->setAttribute(PDO::ATTR_CASE, PDO::CASE_LOWER);
+			//$db->exec("set names utf8"); //Garante UTF em versão < 5.3
+			return $db;
+
+
 		}
 		
 	} catch (PDOException $e) {
