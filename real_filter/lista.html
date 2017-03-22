@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+
+<p>Filtros:</p>
+<label for="apenasAtivos"><input type="checkbox" id="apenasAtivos" /> Filtrar Ativos</label>
+<p style="margin-bottom: 5px;">Nome:</p>
+<input type="text" name="nome" id="nomeDaEmpresa" placeholder="Informe o nome da Empresa"/>
+
+
+	
+<hr />
+<h3>Dados:</h3>		
+<table style="width: 100%;text-align: left;">
+	<thead>
+		<tr>
+			<th>Nome da Empresa</th>
+			<th>Status</th>
+		</tr>
+	</thead>
+	<tbody id="dados">
+	
+	</tbody>
+
+</table>
+
+
+
+<script type="text/javascript">	
+	var dados = [
+		{
+		  "Nome": "Carrefour",
+		  "Status": true
+		}
+		,{
+		  "Nome": "Pão de Açucar",
+		  "Status": false
+		}
+		,{
+		  "Nome": "Extra",
+		  "Status": true
+		}
+		,{
+		  "Nome": "WallMart",
+		  "Status": true
+		}
+	];
+	
+	var filtrosAtivos = {
+		 status 	: false
+		,nome 		: false
+		,nome_key 	: ''		
+	};
+	
+	//Limpa os li's anteriores, 
+	function clearUl(){
+		var dadosTable = document.getElementById("dados");
+		while (dadosTable.firstChild) {
+			dadosTable.removeChild(dadosTable.firstChild);
+		}
+	}
+	
+	function popDados(arrDados){
+		//Simplismente Popula...
+		for(x in arrDados){			
+			var dadosTable = document.createElement('tr');
+			dadosTable.innerHTML = '<td>'+  arrDados[x]['Nome'] +'</td>' + '<td>'+ arrDados[x]['Status'] +'</td>';			 
+			
+			document.getElementById("dados").appendChild(dadosTable);					
+		}
+	}
+	
+	function applyFilters(){
+		
+		//Make Perfect Copy
+		var dadosCopy = dados.slice();
+		//Limpa os nodes anteriores.
+		clearUl();
+		
+		//Tirou os filtros
+		if(filtrosAtivos.status){		
+			var i = dadosCopy.length;
+			while (i--) {
+				if(!dadosCopy[i]['Status']){
+					dadosCopy.splice(i, 1); // Remove o elemento
+				}
+			}
+		}		
+		
+		if(filtrosAtivos.nome_key != ''){	
+			var i = dadosCopy.length;
+			while (i--) {
+				//Suporte a browser q n tem suporte a função
+				if(String.prototype.match){
+				
+					var myRegex = new RegExp(filtrosAtivos.nome_key, 'gi');
+					var temCaracter = dadosCopy[i]['Nome'].match(myRegex);
+					
+					if(temCaracter ==  null){
+						dadosCopy.splice(i, 1); // Remove o elemento
+					}
+				
+				} else {
+				
+					if(dadosCopy[i]['Nome'].indexOf(filtrosAtivos.nome_key)){
+						dadosCopy.splice(i, 1); // Remove o elemento
+					}
+					
+				}
+			}
+		}
+		
+		popDados(dadosCopy);
+	}
+	
+	//Ao clicar ativa os filtros
+	document.getElementById('apenasAtivos').addEventListener('click', function() {	
+		filtrosAtivos.status = this.checked;
+		applyFilters();
+	});
+	
+	
+	//Ao clicar ativa os filtros
+	document.getElementById('nomeDaEmpresa').addEventListener('keyup', function() {
+		filtrosAtivos.nome_key = this.value;
+		applyFilters();
+	});
+	
+	
+	
+	
+	//Inicia a pagina e já popula
+	popDados(dados);
+</script>
+</body>
+</html>
