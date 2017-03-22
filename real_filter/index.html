@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+
+<p>Filtro por Nome:</p>
+<p style="margin-bottom: 5px;">Nome:</p>
+<input type="text" name="nome" id="nomeDaEmpresa" placeholder="Informe o nome da Empresa"/>
+
+
+	
+<hr />
+<h3>Dados:</h3>		
+<table style="width: 100%;text-align: left;">
+	<thead>
+		<tr>
+			<th>Nome da Empresa</th>
+			<th>Status</th>
+		</tr>
+	</thead>
+	<tbody id="dados">
+	
+	</tbody>
+
+</table>
+
+
+
+<script type="text/javascript">	
+	var dados = [
+		{
+		  "Nome": "Carrefour",
+		  "Status": true
+		}
+		,{
+		  "Nome": "Pão de Açucar",
+		  "Status": false
+		}
+		,{
+		  "Nome": "Extra",
+		  "Status": true
+		}
+		,{
+		  "Nome": "WallMart",
+		  "Status": true
+		}
+	];
+	
+	document.getElementById("nomeDaEmpresa").addEventListener("keyup", function() {
+	
+		var dadosCopy = dados.slice();
+	
+		var filterNome = this.value;
+		if(filterNome != ''){
+			
+			var i = dadosCopy.length;
+			while (i--) {
+			
+				var myRegex = new RegExp(filterNome, 'gi');
+				
+				if(dadosCopy[i]['Nome'].match(myRegex) ==  null){
+					dadosCopy.splice(i, 1); // Remove o elemento
+				}
+			}
+		}
+		
+		popDados(dadosCopy);
+	});	
+	
+	
+	function popDados(myArr){
+		var dadosTable = document.getElementById("dados");
+		while (dadosTable.firstChild) {
+			dadosTable.removeChild(dadosTable.firstChild);
+		}
+		
+		for(var x = 0; x < myArr.length; x++){
+			var trTable = document.createElement('tr');
+			trTable.innerHTML = '<td>'+  myArr[x]['Nome'] +'</td>' + '<td>'+ myArr[x]['Status'] +'</td>';			 
+			
+			document.getElementById("dados").appendChild(trTable);
+		}
+	}
+	
+	//Logo ao iniciar o DOM
+	popDados(dados);
+</script>
+</body>
+</html>
