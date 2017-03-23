@@ -32,8 +32,10 @@ Com meus humildes conhecimentos em SQL não encontrei a solução....
 Mas assim como o MasterCard pra tudo na vida existe uma linguagem de programação O.P. para ajudar....
 
 
+
+Original:  
 ```
-Original:
+
 10:00:01	PARADO
 10:00:50	MOVIMENTO
 10:02:01	PARADO
@@ -50,10 +52,8 @@ Basicamente no altorimo tiro as duplicidades.
 E calculo a diferença de tempo.
 
 
-Ficando algo +/- assim:
-
-Duvida na integra:                                     
------------------- 
+Ficando algo +/- assim:  
+```
 10:00:01	PARADO    (00:00:49)
 10:00:50	MOVIMENTO 
 
@@ -64,7 +64,7 @@ Duvida na integra:
 10:15:10	MOVIMENTO
 
 10:17:01	PARADO
------
+```
 
 
 SQLs:
