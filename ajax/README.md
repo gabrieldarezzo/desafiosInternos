@@ -142,7 +142,7 @@ Basicamente aproveitamos o exemplo anterior que monitora o botão, e ao disparar
 </html>
 ```
 (Live Show)
-http://gabrieldarezzo.github.io/desafiosInternos/ajax/trocar-texto.html
+http://gabrieldarezzo.github.io/desafiosInternos/ajax/ajax.html
 
 ## 4 - Enviar dados do Formulário via POST 
 Exemplo de como enviar um POST a partir de uma div dinâmica serialize()

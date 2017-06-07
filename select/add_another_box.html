@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Exemplo com jQuery</title>
+	
+	<!-- Compiled and minified CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+	
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+	<div class="row">
+		<div class="col s12">
+			<h2>Cidades:</h2>
+		</div>
+		
+		<div class="col s12">
+			<select name="cidades" id="cidades">
+				<option value="" disabled selected>Escolha uma cidade</option>				  
+				<option value=""></option>
+			</select>
+			<label for="cidades">Cidades:</label>
+		</div>
+		
+		<div class="col s12">
+			<div class="input-field">				
+				<button type="button" name="action" disabled="disabled" id="btn-add" class="btn btn-large green waves-effect waves-light col s12">Adicionar</button>
+			</div>
+		</div>
+		
+		<div class="col s12">			
+			<div class="collection">
+				<a href="#!" class="collection-item">
+					<span class="badge">1</span>
+					Alan
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {		
+	
+		//Apenas para o MaterilizeCss funcionar o.k. (<select>)
+		$('select').material_select();
+		
+		$.ajax({
+			 url: 'cidades_sp.json'
+			,type:'GET'
+			,dataType: 'json'
+			,cache: true
+			,success: function(json) {
+				var cidades = $("#cidades");
+				
+				for(x in json){
+					var cidade = json[x];					
+					$("<option />", {value: x, text: cidade}).appendTo(cidades);
+				}
+				
+				cidades.material_select();
+			}
+			,error: function(json){
+				//console.log(json);
+			}
+		});
+		
+		$( "#cidades" ).bind( "change", function() {		
+			//Libera o botão Add
+			$( "#btn-add" ).attr('disabled', false);
+		});
+		
+		$( "#btn-add" ).bind( "click", function() {
+			var item = $('<a>').addClass('collection-item').text('xxs');
+			
+			//item.append($('<span>').addClass('badge').text('1'));
+			var btnx = '<a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">delete</i></a>';
+			
+			
+			item.append('<span class="badge">'+ btnx +'</span>');
+			
+			$('.collection').append(item);			
+		});
+				
+		$('.cidades_table').on('click', '.btn-remove', function(){					
+			$(this).parent().parent().remove();
+		});
+		
+		
+		/*
+		$( ".btn-delete" ).bind( "click", function() {
+			var vm = $(this);
+			var model_delete = $(this).data('model_delete');
+			var id = $(this).data('idx');
+			
+			if(confirm('Deseja realmente excluir?')){
+				$.ajax({
+					 url: BASE_URL + model_delete + '/' + id					
+					,type:'DELETE'
+					,dataType: 'json'
+					,headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					}
+					,success: function(json){
+						if(json.success){
+							vm.parent().parent().remove();
+							return false;
+						}
+						alert(json.msg);							
+					}
+					,error: function(json){
+						console.log(json);
+					}
+				});				
+			}
+		});
+		*/
+
+						
+	});
+</script>
+</body>
+</html>

@@ -50,22 +50,19 @@
 	];
 	
 	document.getElementById("nomeDaEmpresa").addEventListener("keyup", function() {
-	
+		
 		var dadosCopy = dados.slice();
-	
-		var filterNome = this.value;
-		if(filterNome != ''){
-			
-			var i = dadosCopy.length;
-			while (i--) {
-			
-				var myRegex = new RegExp(filterNome, 'gi');
-				
-				if(dadosCopy[i]['Nome'].match(myRegex) ==  null){
-					dadosCopy.splice(i, 1); // Remove o elemento
-				}
+		const filterNome = this.value;
+		
+		
+		var i = dadosCopy.length;
+		while (i--) {
+		
+			var myRegex = new RegExp(filterNome, 'gi');			
+			if(dadosCopy[i]['Nome'].match(myRegex) ==  null){
+				dadosCopy.splice(i, 1); // Remove o elemento
 			}
-		}
+		}		
 		
 		popDados(dadosCopy);
 	});	
