@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ZendFormSendPost</title>
+</head>
+<body>
+
+<!--
+Links Interessantes
+https://plainjs.com/javascript/ajax/send-ajax-get-and-post-requests-47/
+-->
+
+<script>
+	const url = 'http://localhost/pagina.php';
+	const xhr = new XMLHttpRequest();
+	
+	const dataParams = {
+		'cpf_autorizador': '412.975.058-59',
+		'senha_autorizador' : '98dsa9dsa',		
+	};
+	
+	
+	const params = typeof dataParams == 'string' ? dataParams : Object.keys(dataParams).map(
+		function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(dataParams[k]) }
+	).join('&');
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == XMLHttpRequest.DONE ) {
+			if (xhr.status == 200) {
+				
+				const response = xhr.responseText;
+				console.log('textoPuro', response);
+				
+				const json = JSON.parse(response);
+				console.log(json);
+			}
+		}
+	};
+
+	xhr.open('POST', url, true);
+	//xhr.setRequestHeader("Content-Type", "application/json");
+	//xhr.setRequestHeader("Authorization", 'Bearer ' + tokenSpotify);
+	xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	
+	
+	//Opção2
+	xhr.send(JSON.stringify(dataParams));
+	
+	xhr.send(params);
+	
+	
+
+</script>
+</body>
+</html>
