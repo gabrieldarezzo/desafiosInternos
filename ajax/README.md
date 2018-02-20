@@ -264,6 +264,11 @@ Code:
 https://github.com/gabrieldarezzo/gabrieldarezzo.github.io/blob/master/busca_cep/index.html  
 
 
+-- Mais exemplos: (Jquery / Axios)
+https://tableless.com.br/como-fazer-requisicoes-ajax
+
+
+
 
 	
 Mais motivos para utilizar o Chrome:  
